@@ -6,7 +6,7 @@
     <title>Astro-Mascota: Misión Multiplicación</title>
     <style>
         /* =========================================
-           DISEÑO INFANTIL - ACADEMIA ESPACIAL + MOTOR VISUAL
+           DISEÑO INFANTIL - ACADEMIA ESPACIAL + ANDAMIAJE
            ========================================= */
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;800&display=swap');
 
@@ -100,44 +100,18 @@
         .story-text { font-size: 1.3rem; color: #e0e0e0; margin-bottom: 15px; line-height: 1.5; display: none; }
         .question-text { font-family: 'Fredoka One', cursive; font-size: 2.5rem; margin: 10px 0; color: #fff; }
 
-        /* =========================================
-           ESTILOS DEL MOTOR VISUAL (NUEVO)
-           ========================================= */
-        .visual-aid-box {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 15px;
-            margin: 15px auto;
-            max-width: 90%;
-            display: inline-block;
-            min-width: 200px;
-        }
+        /* Motor Visual */
+        .visual-aid-box { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 15px; padding: 15px; margin: 15px auto; max-width: 90%; display: inline-block; min-width: 200px; }
+        .visual-aid-mnemonic { font-size: 1.5rem; color: var(--accent); font-family: 'Fredoka One', cursive; }
+        .visual-aid-mnemonic span { font-size: 3rem; display: block; margin-bottom: 5px; }
+        .visual-aid-matrix { font-size: 1.2rem; line-height: 1.2; letter-spacing: 5px; color: #fff; }
 
-        .visual-aid-mnemonic {
-            font-size: 1.5rem;
-            color: var(--accent);
-            font-family: 'Fredoka One', cursive;
-        }
-
-        .visual-aid-mnemonic span {
-            font-size: 3rem;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .visual-aid-matrix {
-            font-size: 1.2rem;
-            line-height: 1.2;
-            letter-spacing: 5px;
-            color: #fff;
-        }
-
-        /* Tips y Opciones */
+        /* Tips de Neurociencia y Andamiaje */
         .neuro-tip { background: var(--tip-bg); border: 2px dashed #d500f9; padding: 15px; border-radius: 15px; margin-top: 20px; font-size: 1.1rem; display: none; animation: fadeIn 0.5s; }
         .neuro-tip span.title { font-weight: bold; color: #e040fb; font-size: 1.2rem; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Botones de Opciones */
         .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
         .option-btn { background: linear-gradient(145deg, #2a114f, #3b1b6e); border: 2px solid var(--primary); color: white; font-family: 'Fredoka One', cursive; font-size: 1.8rem; padding: 15px 5px; border-radius: 15px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 5px 0 #1a0b2e; }
         .option-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #1a0b2e, 0 0 15px var(--primary); }
@@ -145,9 +119,11 @@
         .option-btn.correct { background: var(--correct); border-color: #fff; color: #000; }
         .option-btn.wrong { background: var(--wrong); border-color: #fff; color: #000; opacity: 0.8; }
 
+        /* Pantallas Overlay */
         .overlay-screen { display: none; text-align: center; padding: 2rem; animation: fadeIn 0.5s ease; }
         .restart-btn { background: var(--correct); color: #000; border: none; padding: 15px 30px; font-family: 'Fredoka One', cursive; font-size: 1.5rem; border-radius: 20px; margin-top: 20px; cursor: pointer; box-shadow: 0 5px 0 #009955; transition: 0.2s; }
         .restart-btn:hover { transform: scale(1.05); }
+
     </style>
 </head>
 <body>
@@ -229,8 +205,8 @@
                 </div>
                 
                 <div class="neuro-tip" id="neuro-tip-box">
-                    <span class="title">🧠 Astro-Secreto:</span> 
-                    <span id="neuro-tip-text" style="color:white; display:block; margin-top:5px;"></span>
+                    <span class="title" id="tip-title">🧠 Astro-Secreto:</span> 
+                    <span id="neuro-tip-text" style="color:white; display:block; margin-top:5px; line-height: 1.4;"></span>
                 </div>
             </div>
         </div>
@@ -256,7 +232,9 @@
     </div>
 
     <script>
+        // ==========================================
         // CONFIGURACIÓN DE TABLAS
+        // ==========================================
         let selectedTables = [2, 3, 4, 5, 6];
 
         function toggleTable(num) {
@@ -294,7 +272,7 @@
         }
 
         // ==========================================
-        // DICCIONARIO MNEMOTÉCNICO (NUEVO MOTOR VISUAL)
+        // MOTOR VISUAL Y ESTRATEGIAS MATEMÁTICAS
         // ==========================================
         const visualMnemonicDict = {
             "6x5": { icon: "🕒", text: "¡El reloj marca y media (30 min)!" },
@@ -315,48 +293,61 @@
             const key = `${a}x${b}`;
             const reverseKey = `${b}x${a}`;
 
-            // 1. Revisar si hay un Anclaje Específico (Ej. El reloj de 6x5)
             if (visualMnemonicDict[key] || visualMnemonicDict[reverseKey]) {
                 const data = visualMnemonicDict[key] || visualMnemonicDict[reverseKey];
-                visualBox.innerHTML = `
-                    <div class="visual-aid-mnemonic">
-                        <span>${data.icon}</span>
-                        ${data.text}
-                    </div>
-                `;
+                visualBox.innerHTML = `<div class="visual-aid-mnemonic"><span>${data.icon}</span>${data.text}</div>`;
                 return;
             }
 
-            // 2. Revisar si es la tabla del 2 (Dobles)
             if (a === 2 || b === 2) {
                 const otherNum = (a === 2) ? b : a;
-                visualBox.innerHTML = `
-                    <div class="visual-aid-mnemonic" style="font-size:1.2rem;">
-                        <span>👯</span>
-                        ¡Es el DOBLE de ${otherNum}! (${otherNum} + ${otherNum})
-                    </div>
-                `;
+                visualBox.innerHTML = `<div class="visual-aid-mnemonic" style="font-size:1.2rem;"><span>👯</span>¡Es el DOBLE de ${otherNum}! (${otherNum} + ${otherNum})</div>`;
                 return;
             }
 
-            // 3. Si no hay anclaje, dibujar la Matriz Visual (Arreglo Rectangular)
-            // Limitamos a máximo 50 iconos para que no colapse la pantalla si elige tablas altas después
             if ((a * b) <= 60) {
                 let matrixHTML = '<div class="visual-aid-matrix">';
                 const emoji = (currentMode === 'story') ? "🚀" : "⭐";
                 for (let i = 0; i < a; i++) {
-                    for (let j = 0; j < b; j++) {
-                        matrixHTML += emoji;
-                    }
+                    for (let j = 0; j < b; j++) { matrixHTML += emoji; }
                     matrixHTML += "<br>";
                 }
                 matrixHTML += '</div>';
                 visualBox.innerHTML = matrixHTML;
                 return;
             }
-
-            // Si es un número muy grande, no mostrar nada para no ensuciar la pantalla
             visualBox.innerHTML = "";
+        }
+
+        // GENERADOR DE ESTRATEGIAS (Andamiaje Dinámico)
+        function getSpecificMathTip(a, b) {
+            // Si existe una imagen visual, recordársela
+            const key = `${a}x${b}`;
+            const reverseKey = `${b}x${a}`;
+            if (visualMnemonicDict[key] || visualMnemonicDict[reverseKey]) {
+                const data = visualMnemonicDict[key] || visualMnemonicDict[reverseKey];
+                return `¿Recuerdas la imagen? ${data.icon} Piensa en ${data.text}.`;
+            }
+
+            // Trucos matemáticos basados en el número
+            if (a === 5 || b === 5) {
+                return `¡Usa el truco del 5! Cuenta con tus dedos de 5 en 5, como en las escondidas.`;
+            }
+            if (a === 4 || b === 4) {
+                const other = (a === 4) ? b : a;
+                return `Truco del 4: Primero saca el doble de ${other}, y luego saca el doble de ese resultado.`;
+            }
+            if (a === 3 || b === 3) {
+                const other = (a === 3) ? b : a;
+                return `Truco del 3: Es sumar el número tres veces. ¿Cuánto es ${other} + ${other} + ${other}?`;
+            }
+            if (a === 6 || b === 6) {
+                const other = (a === 6) ? b : a;
+                return `Truco del 6: Multiplica ${other}x5 primero, y luego súmale ${other} una vez más.`;
+            }
+
+            // Truco del espejo (Conmutatividad) general
+            return `El truco del Espejo: Si no sabes cuánto es ${a}x${b}, pregúntale a tu memoria si sabe cuánto es ${b}x${a}. ¡Es lo mismo!`;
         }
 
         // DATOS MISIONES
@@ -368,16 +359,20 @@
         
         const neuroTips = [
             "¡Equivocarse es genial! Tu cerebro acaba de crear una nueva conexión.",
-            "Truco de Espejo: 4x3 es igual a 3x4. ¡Ahorra memoria!",
-            "Si olvidas una, suma: 5x4 es 5+5+5+5.",
-            "Usa tus dedos e imagina los números saltando."
+            "Cada vez que lo intentas, tus neuronas se hacen más fuertes.",
+            "La respuesta está en tu cabeza, solo necesita un poco de tiempo para salir.",
+            "¡No te rindas! Los mejores astronautas también se equivocan al entrenar."
         ];
 
         // ESTADO JUEGO
         let currentMode = 'flash'; 
         let currentAnswer = 0;
+        let currentFactorA = 0; // Para rastrear la estrategia
+        let currentFactorB = 0; // Para rastrear la estrategia
+        let currentFails = 0; // RASTREADOR DE ERRORES CONSECUTIVOS
         let stars = 0;
         let isWaiting = false; 
+        
         let energy = 30; 
         let currentLevelIndex = 0; 
         let currentQuestionIndex = 0; 
@@ -389,7 +384,9 @@
         const questionEl = document.getElementById('question');
         const storyContainerEl = document.getElementById('story-container');
         const neuroTipBoxEl = document.getElementById('neuro-tip-box');
+        const tipTitleEl = document.getElementById('tip-title');
         const neuroTipTextEl = document.getElementById('neuro-tip-text');
+        
         const gameScreen = document.getElementById('game-screen');
         const levelPassedScreen = document.getElementById('level-passed-screen');
         const gameOverScreen = document.getElementById('game-over-screen');
@@ -411,6 +408,7 @@
             hideAllGameScreens();
             gameScreen.style.display = 'block';
             neuroTipBoxEl.style.display = "none";
+            currentFails = 0;
             
             if(mode === 'flash') {
                 document.getElementById('nav-flash').classList.add('active');
@@ -432,15 +430,16 @@
 
         function generateFlashQuestion() {
             isWaiting = false;
+            currentFails = 0; // Reinicia contador de errores
             resetMascotFace();
             
-            const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
-            const multiplier = Math.floor(Math.random() * 10) + 1;
+            currentFactorA = selectedTables[Math.floor(Math.random() * selectedTables.length)];
+            currentFactorB = Math.floor(Math.random() * 10) + 1;
             
-            currentAnswer = table * multiplier;
-            questionEl.innerText = `${table} x ${multiplier} = ?`;
+            currentAnswer = currentFactorA * currentFactorB;
+            questionEl.innerText = `${currentFactorA} x ${currentFactorB} = ?`;
             
-            renderVisualAid(table, multiplier); // Llamada al Motor Visual
+            renderVisualAid(currentFactorA, currentFactorB); 
             generateOptionsButtons(currentAnswer);
         }
 
@@ -485,22 +484,23 @@
 
         function generateStoryQuestion() {
             isWaiting = false;
+            currentFails = 0; // Reinicia contador de errores
             resetMascotFace();
             updateStoryUI();
 
             const rawTemplate = activeLevelTemplates[currentQuestionIndex];
-            const tableA = selectedTables[Math.floor(Math.random() * selectedTables.length)];
-            const multiplierB = Math.floor(Math.random() * 10) + 1;
+            currentFactorA = selectedTables[Math.floor(Math.random() * selectedTables.length)];
+            currentFactorB = Math.floor(Math.random() * 10) + 1;
             
-            currentAnswer = tableA * multiplierB;
+            currentAnswer = currentFactorA * currentFactorB;
             
-            const finalStory = rawTemplate.replace('{A}', `<span style="color:var(--primary); font-weight:bold">${tableA}</span>`)
-                                          .replace('{B}', `<span style="color:var(--accent); font-weight:bold">${multiplierB}</span>`);
+            const finalStory = rawTemplate.replace('{A}', `<span style="color:var(--primary); font-weight:bold">${currentFactorA}</span>`)
+                                          .replace('{B}', `<span style="color:var(--accent); font-weight:bold">${currentFactorB}</span>`);
             
             storyContainerEl.innerHTML = finalStory;
             questionEl.innerText = "¿Cuál es el resultado?";
             
-            renderVisualAid(tableA, multiplierB); // Llamada al Motor Visual
+            renderVisualAid(currentFactorA, currentFactorB); 
             generateOptionsButtons(currentAnswer);
         }
 
@@ -534,6 +534,8 @@
             neuroTipBoxEl.style.display = "none";
 
             if (selectedValue === currentAnswer) {
+                // =============== ACUERTO ===============
+                currentFails = 0; 
                 btnElement.classList.add('correct');
                 mascotEl.innerText = "😋"; 
                 mascotEl.classList.add('eating');
@@ -564,13 +566,28 @@
                     }
                 }
             } else {
+                // =============== FALLO ===============
+                currentFails++;
                 btnElement.classList.add('wrong');
                 mascotEl.innerText = "😖"; 
                 mascotEl.classList.add('sad');
                 
-                neuroTipTextEl.innerText = neuroTips[Math.floor(Math.random() * neuroTips.length)];
+                // Sistema de Andamiaje Dinámico
+                if (currentFails === 1) {
+                    // Primer error: Mensaje de ánimo
+                    tipTitleEl.innerText = "🧠 Astro-Secreto:";
+                    tipTitleEl.style.color = "#e040fb";
+                    neuroTipTextEl.innerText = neuroTips[Math.floor(Math.random() * neuroTips.length)];
+                } else {
+                    // Segundo error o más: Estrategia matemática específica
+                    tipTitleEl.innerText = "🚨 ¡Astro-Rescate Matemático!";
+                    tipTitleEl.style.color = "var(--accent)";
+                    neuroTipTextEl.innerHTML = `<strong style="color:var(--accent); font-size:1.2rem;">${getSpecificMathTip(currentFactorA, currentFactorB)}</strong>`;
+                }
+                
                 neuroTipBoxEl.style.display = "block";
 
+                // Penalización solo en modo historia
                 if (currentMode === 'story') {
                     lives--;
                     updateStoryUI();
@@ -578,7 +595,7 @@
                         setTimeout(() => {
                             hideAllGameScreens();
                             gameOverScreen.style.display = 'block';
-                        }, 2000);
+                        }, 3000); // 3 segundos para que lea el tip de rescate antes de morir
                         return;
                     }
                 }
@@ -587,7 +604,7 @@
                     btnElement.classList.remove('wrong');
                     resetMascotFace();
                     isWaiting = false; 
-                }, 2500); 
+                }, 3000); // Dar buen tiempo para leer el tip
             }
         }
 
