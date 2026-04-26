@@ -6,7 +6,7 @@
     <title>Astro-Mascota: Misión Multiplicación</title>
     <style>
         /* =========================================
-           DISEÑO INFANTIL - ACADEMIA ESPACIAL COMPLETA
+           DISEÑO INFANTIL - ACADEMIA ESPACIAL + MOTOR VISUAL
            ========================================= */
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;800&display=swap');
 
@@ -22,42 +22,27 @@
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Nunito', sans-serif;
+            margin: 0; padding: 0; font-family: 'Nunito', sans-serif;
             background-color: var(--bg-color);
             background-image: radial-gradient(circle at 50% 50%, #2a114f 0%, #1a0b2e 100%);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            color: var(--text-main); min-height: 100vh; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
             overflow-x: hidden;
         }
 
         .stars-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-            opacity: 0.3;
-            z-index: -1;
-            animation: twinkle 10s infinite alternate;
+            opacity: 0.3; z-index: -1; animation: twinkle 10s infinite alternate;
         }
 
         @keyframes twinkle { 0% { opacity: 0.2; } 100% { opacity: 0.5; } }
 
         .game-container {
-            background: var(--panel-bg);
-            backdrop-filter: blur(10px);
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            padding: 2rem;
-            width: 90%;
-            max-width: 700px; 
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            margin: 2rem 0;
+            background: var(--panel-bg); backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.2); border-radius: 30px;
+            padding: 2rem; width: 90%; max-width: 700px; text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5); margin: 2rem 0;
         }
 
         /* Cabecera General */
@@ -65,17 +50,12 @@
         h1 { font-family: 'Fredoka One', cursive; font-size: 1.8rem; margin: 0; color: var(--primary); text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
         .stars-counter { background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 20px; font-size: 1.5rem; font-family: 'Fredoka One', cursive; color: var(--accent); border: 2px solid var(--accent); box-shadow: 0 0 10px rgba(255, 184, 0, 0.3); }
 
-        /* =========================================
-           PANTALLA DE BIENVENIDA (NUEVA)
-           ========================================= */
+        /* Pantalla Bienvenida */
         #welcome-screen { display: block; animation: fadeIn 0.5s ease; }
-        
         .welcome-title { font-size: 2.5rem; color: var(--primary); margin-bottom: 10px; }
         .welcome-subtitle { font-size: 1.2rem; margin-bottom: 30px; color: #b0c4de; }
-
         .table-selector-container { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 20px; margin-bottom: 30px; border: 2px dashed rgba(255,255,255,0.2); }
         .table-selector-container h3 { margin-top: 0; color: var(--accent); font-family: 'Fredoka One', cursive; }
-        
         .table-grid { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
         .table-btn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white; font-family: 'Fredoka One', cursive; font-size: 1.5rem; width: 60px; height: 60px; border-radius: 15px; cursor: pointer; transition: 0.3s; }
         .table-btn.selected { background: var(--correct); border-color: #fff; color: #000; box-shadow: 0 0 15px var(--correct); transform: scale(1.1); }
@@ -83,26 +63,16 @@
 
         .modes-explanation { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         @media (max-width: 600px) { .modes-explanation { grid-template-columns: 1fr; } }
-        
         .mode-card { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 20px; border: 2px solid var(--primary); text-align: left; }
         .mode-card h3 { color: var(--primary); margin-top: 0; font-family: 'Fredoka One', cursive; font-size: 1.4rem; text-align: center; }
         .mode-card p { font-size: 1rem; color: #e0e0e0; line-height: 1.4; margin-bottom: 20px; }
-        .mode-card.story-card { border-color: var(--accent); }
-        .mode-card.story-card h3 { color: var(--accent); }
-
-        .start-btn { width: 100%; background: var(--primary); color: #000; border: none; padding: 15px; font-family: 'Fredoka One', cursive; font-size: 1.3rem; border-radius: 15px; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 0 #008b99; }
+        .start-btn { width: 100%; background: var(--primary); color: #000; border: none; padding: 15px; font-family: 'Fredoka One', cursive; font-size: 1.3rem; border-radius: 15px; cursor: pointer; transition: 0.2s; }
         .start-btn:hover { transform: translateY(-2px); }
-        .start-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #008b99; }
-        .start-btn.story { background: var(--accent); box-shadow: 0 5px 0 #cc9300; }
-        .start-btn.story:active { box-shadow: 0 2px 0 #cc9300; }
-
+        .start-btn.story { background: var(--accent); }
         .error-msg { color: var(--wrong); font-weight: bold; margin-top: 10px; display: none; }
 
-        /* =========================================
-           PANTALLA DE JUEGO
-           ========================================= */
-        #game-screen { display: none; animation: fadeIn 0.5s ease; }
-
+        /* Pantalla Juego */
+        #game-screen-container { display: none; animation: fadeIn 0.5s ease; }
         .mode-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
         .mode-btn-nav { background: rgba(0,0,0,0.4); border: 2px solid var(--primary); color: white; font-family: 'Fredoka One', cursive; padding: 10px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
         .mode-btn-nav.active { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
@@ -117,7 +87,6 @@
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
 
         .mode-ui-container { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; margin-bottom: 20px; }
-        
         .energy-label { font-size: 1.2rem; margin-bottom: 5px; font-weight: bold; }
         .energy-bar-container { width: 100%; height: 25px; background: rgba(0,0,0,0.5); border-radius: 15px; border: 2px solid rgba(255,255,255,0.2); overflow: hidden; }
         .energy-fill { height: 100%; width: 30%; background: linear-gradient(90deg, #ff007f, var(--primary)); border-radius: 15px; transition: width 0.5s ease; box-shadow: 0 0 15px var(--primary); }
@@ -131,6 +100,40 @@
         .story-text { font-size: 1.3rem; color: #e0e0e0; margin-bottom: 15px; line-height: 1.5; display: none; }
         .question-text { font-family: 'Fredoka One', cursive; font-size: 2.5rem; margin: 10px 0; color: #fff; }
 
+        /* =========================================
+           ESTILOS DEL MOTOR VISUAL (NUEVO)
+           ========================================= */
+        .visual-aid-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px auto;
+            max-width: 90%;
+            display: inline-block;
+            min-width: 200px;
+        }
+
+        .visual-aid-mnemonic {
+            font-size: 1.5rem;
+            color: var(--accent);
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .visual-aid-mnemonic span {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .visual-aid-matrix {
+            font-size: 1.2rem;
+            line-height: 1.2;
+            letter-spacing: 5px;
+            color: #fff;
+        }
+
+        /* Tips y Opciones */
         .neuro-tip { background: var(--tip-bg); border: 2px dashed #d500f9; padding: 15px; border-radius: 15px; margin-top: 20px; font-size: 1.1rem; display: none; animation: fadeIn 0.5s; }
         .neuro-tip span.title { font-weight: bold; color: #e040fb; font-size: 1.2rem; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
@@ -142,11 +145,9 @@
         .option-btn.correct { background: var(--correct); border-color: #fff; color: #000; }
         .option-btn.wrong { background: var(--wrong); border-color: #fff; color: #000; opacity: 0.8; }
 
-        /* Pantallas Overlay */
         .overlay-screen { display: none; text-align: center; padding: 2rem; animation: fadeIn 0.5s ease; }
         .restart-btn { background: var(--correct); color: #000; border: none; padding: 15px 30px; font-family: 'Fredoka One', cursive; font-size: 1.5rem; border-radius: 20px; margin-top: 20px; cursor: pointer; box-shadow: 0 5px 0 #009955; transition: 0.2s; }
         .restart-btn:hover { transform: scale(1.05); }
-
     </style>
 </head>
 <body>
@@ -161,7 +162,6 @@
 
             <div class="table-selector-container">
                 <h3>1. Elige tu combustible (Las Tablas)</h3>
-                <p style="margin:5px 0; color:#b0c4de;">Puedes elegir una sola, o varias al mismo tiempo.</p>
                 <div class="table-grid">
                     <button class="table-btn selected" id="tb-2" onclick="toggleTable(2)">2</button>
                     <button class="table-btn selected" id="tb-3" onclick="toggleTable(3)">3</button>
@@ -170,26 +170,25 @@
                     <button class="table-btn selected" id="tb-6" onclick="toggleTable(6)">6</button>
                     <button class="table-btn all-btn" onclick="selectAllTables()">Todas</button>
                 </div>
-                <p id="table-error" class="error-msg">¡Debes seleccionar al menos una tabla para jugar!</p>
+                <p id="table-error" class="error-msg">¡Debes seleccionar al menos una tabla!</p>
             </div>
 
             <h3 style="color: var(--text-main); margin-bottom: 15px;">2. Elige tu Misión</h3>
             <div class="modes-explanation">
                 <div class="mode-card">
                     <h3>🍎 Snack Rápido</h3>
-                    <p><strong>Objetivo:</strong> Mantener viva y llenita a tu mascota espacial.<br><br>Saldrán preguntas rápidas. Si aciertas, la alimentas y sube su energía. ¡Ideal para calentar el cerebro!</p>
+                    <p>Mantén viva a tu mascota. Preguntas rápidas con ayudas visuales.</p>
                     <button class="start-btn" onclick="attemptStartGame('flash')">Jugar Snack</button>
                 </div>
-
-                <div class="mode-card story-card">
-                    <h3>🌍 Viaje Espacial</h3>
-                    <p><strong>Objetivo:</strong> Superar 3 niveles galácticos resolviendo problemas.<br><br>Avanza por el espacio superando 8 misiones por nivel. Tienes 3 vidas (corazones). ¡Concéntrate cadete!</p>
+                <div class="mode-card" style="border-color: var(--accent);">
+                    <h3 style="color: var(--accent);">🌍 Viaje Espacial</h3>
+                    <p>Supera 3 niveles de historias. Tienes 3 corazones de vida.</p>
                     <button class="start-btn story" onclick="attemptStartGame('story')">Jugar Misiones</button>
                 </div>
             </div>
         </div>
 
-        <div id="game-screen-container" style="display: none;">
+        <div id="game-screen-container">
             <div class="header">
                 <h1 style="cursor: pointer;" onclick="goHome()">🏠 Volver</h1>
                 <div class="stars-counter">⭐ <span id="stars-score">0</span></div>
@@ -213,7 +212,7 @@
 
                     <div id="ui-story" style="display: none;">
                         <div class="story-header">
-                            <span class="level-badge" id="level-name">Nivel 1: Despegue</span>
+                            <span class="level-badge" id="level-name">Nivel 1</span>
                             <span class="hearts" id="hearts-display">❤️❤️❤️</span>
                         </div>
                         <div class="progress-text">Misión <span id="q-current">1</span> de 8</div>
@@ -223,6 +222,9 @@
                 <div class="question-box">
                     <div id="story-container" class="story-text"></div>
                     <div class="question-text" id="question">2 x 3 = ?</div>
+                    
+                    <div id="visual-aid" class="visual-aid-box"></div>
+
                     <div class="options-grid" id="options"></div>
                 </div>
                 
@@ -236,32 +238,26 @@
         <div id="level-passed-screen" class="overlay-screen">
             <div class="mascot-emoji" style="font-size: 6rem;">🤩</div>
             <h2 style="font-family: 'Fredoka One'; color: var(--primary);">¡Sector Despejado!</h2>
-            <p style="font-size: 1.2rem;">Tu cerebro se está haciendo más fuerte. Prepárate para el siguiente nivel.</p>
             <button class="restart-btn" onclick="startNextLevel()">Siguiente Nivel</button>
         </div>
 
         <div id="game-over-screen" class="overlay-screen">
             <div class="mascot-emoji" style="font-size: 6rem; filter: grayscale(100%);">🤕</div>
             <h2 style="font-family: 'Fredoka One'; color: var(--wrong);">¡Sin Energía!</h2>
-            <p style="font-size: 1.2rem;">Nos quedamos sin vidas. ¡Pero los astronautas nunca se rinden! Reagrupemos y volvamos a intentar.</p>
             <button class="restart-btn" style="background:var(--accent);" onclick="restartCurrentLevel()">Reintentar Nivel</button>
-            <button class="restart-btn" style="background:rgba(255,255,255,0.2); color:#fff;" onclick="goHome()">Cambiar Tablas</button>
         </div>
 
         <div id="victory-screen" class="overlay-screen">
             <div class="mascot-emoji" style="font-size: 8rem;">🥳🚀</div>
-            <h2 style="font-family: 'Fredoka One'; color: var(--correct); font-size: 2.2rem;" id="victory-title">¡Misión Cumplida!</h2>
-            <p style="font-size: 1.2rem;" id="victory-text">Has demostrado ser una cadete matemática de élite.</p>
+            <h2 style="font-family: 'Fredoka One'; color: var(--correct);" id="victory-title">¡Misión Cumplida!</h2>
             <button class="restart-btn" onclick="goHome()">Volver al Inicio</button>
         </div>
 
     </div>
 
     <script>
-        // ==========================================
-        // CONFIGURACIÓN DE TABLAS (ESTADO GLOBAL)
-        // ==========================================
-        let selectedTables = [2, 3, 4, 5, 6]; // Por defecto, todas activas
+        // CONFIGURACIÓN DE TABLAS
+        let selectedTables = [2, 3, 4, 5, 6];
 
         function toggleTable(num) {
             const btn = document.getElementById(`tb-${num}`);
@@ -298,87 +294,102 @@
         }
 
         // ==========================================
-        // BASE DE DATOS EDUCATIVA DINÁMICA (TEMPLATES)
+        // DICCIONARIO MNEMOTÉCNICO (NUEVO MOTOR VISUAL)
         // ==========================================
-        
-        // Ahora usamos {A} y {B} que serán reemplazados dinámicamente según las tablas seleccionadas.
-        const missionLevels = [
-            {
-                levelName: "Nivel 1: El Cinturón de Asteroides",
-                templates: [
-                    "Para reparar la nave, necesitamos {A} filas de {B} bloques solares. ¿Cuántos bloques son en total?",
-                    "Plantamos Palmas estelares en {A} macetas. Cada maceta tiene {B} semillas. ¿Cuántas hay?",
-                    "Llegaron {A} naves espaciales, y cada una trae {B} pequeños alienígenas adorables. ¿Cuántos son en total?",
-                    "Hay {A} cajas cuadradas. Adentro de cada caja duermen {B} frailejones mágicos. ¿Cuántos hay?",
-                    "Tu mascota dio {A} saltos largos. Cada salto midió {B} metros. ¿Cuántos metros avanzó?",
-                    "Descubrimos {A} planetas nuevos. Cada planeta tiene {B} lunas brillantes. ¿Cuántas lunas vemos?",
-                    "Hay {A} astronautas trabajando, y cada uno lleva {B} herramientas en su cinturón. ¿Cuántas llevan?",
-                    "Encontramos {A} cofres flotantes. Cada cofre tiene {B} monedas de oro espacial. ¿Cuántas monedas son?"
-                ]
-            },
-            {
-                levelName: "Nivel 2: La Nebulosa de Colores",
-                templates: [
-                    "El panel de control tiene {A} botones rojos. Cada botón necesita {B} cristales para funcionar. ¿Cuántos usamos?",
-                    "Recogimos {A} rocas lunares, y cada roca pesa {B} kilos. ¿Cuánto pesan todas juntas?",
-                    "Hay {A} trajes espaciales. A cada traje le pusimos {B} parches protectores. ¿Cuántos parches usamos?",
-                    "En la guardería hay {A} alienígenas bebes. Cada uno tiene {B} antenitas tiernas. ¿Cuántas antenitas hay?",
-                    "Conectamos {A} torres de energía, cada una con {B} cables gruesos. ¿Cuántos cables conectamos?",
-                    "Exploramos {A} cráteres. En cada cráter dejamos {B} banderas plantadas. ¿Cuántas banderas dejamos?",
-                    "La nave activó {A} propulsores. Cada propulsor lanza {B} ráfagas de fuego azul. ¿Cuántas ráfagas son?",
-                    "Limpiamos las {A} ventanas de la nave usando {B} frascos de jabón estelar. ¿Cuántos jabones usamos?"
-                ]
-            },
-            {
-                levelName: "Nivel 3: La Galaxia Lejana",
-                templates: [
-                    "El capitán dibujó {A} mapas. Cada mapa muestra {B} rutas secretas. ¿Cuántas rutas podemos elegir?",
-                    "Encontramos {A} anillos flotantes. Cada anillo está decorado con {B} diamantes. ¿Cuántos diamantes hay?",
-                    "Orbitamos {A} planetas gigantes. Cada planeta tiene {B} lunas de hielo. ¿Cuántas lunas vimos?",
-                    "Hay {A} escudos de fuerza. Cada escudo resiste {B} impactos de meteorito. ¿Cuántos impactos resisten en total?",
-                    "Vimos pasar {A} soles ardientes. Cerca de cada sol volaban {B} pájaros de fuego. ¿Cuántos pájaros vimos?",
-                    "Atravesamos {A} nubes de polvo. Cada nube nos ensució con {B} manchas. ¿Cuántas manchas limpiamos?",
-                    "Tu mascota necesita {A} vitaminas al día. Si le damos vitaminas por {B} días, ¿cuántas se tomará?",
-                    "Rescatamos {A} cápsulas perdidas. En cada cápsula había {B} galletas espaciales. ¿Cuántas galletas tenemos?"
-                ]
+        const visualMnemonicDict = {
+            "6x5": { icon: "🕒", text: "¡El reloj marca y media (30 min)!" },
+            "5x6": { icon: "🕒", text: "¡El reloj marca y media (30 min)!" },
+            "3x4": { icon: "🥚", text: "Una docena de huevos (12)" },
+            "4x3": { icon: "🥚", text: "Una docena de huevos (12)" },
+            "6x4": { icon: "🌍", text: "Las 24 horas del día" },
+            "4x6": { icon: "🌍", text: "Las 24 horas del día" },
+            "5x5": { icon: "🪙", text: "Moneda de 25 centavos" },
+            "2x5": { icon: "🖐️", text: "Dos manos tienen 10 dedos" },
+            "5x2": { icon: "🖐️", text: "Dos manos tienen 10 dedos" },
+            "3x5": { icon: "🕒", text: "Un cuarto de hora (15 min)" },
+            "5x3": { icon: "🕒", text: "Un cuarto de hora (15 min)" }
+        };
+
+        function renderVisualAid(a, b) {
+            const visualBox = document.getElementById('visual-aid');
+            const key = `${a}x${b}`;
+            const reverseKey = `${b}x${a}`;
+
+            // 1. Revisar si hay un Anclaje Específico (Ej. El reloj de 6x5)
+            if (visualMnemonicDict[key] || visualMnemonicDict[reverseKey]) {
+                const data = visualMnemonicDict[key] || visualMnemonicDict[reverseKey];
+                visualBox.innerHTML = `
+                    <div class="visual-aid-mnemonic">
+                        <span>${data.icon}</span>
+                        ${data.text}
+                    </div>
+                `;
+                return;
             }
+
+            // 2. Revisar si es la tabla del 2 (Dobles)
+            if (a === 2 || b === 2) {
+                const otherNum = (a === 2) ? b : a;
+                visualBox.innerHTML = `
+                    <div class="visual-aid-mnemonic" style="font-size:1.2rem;">
+                        <span>👯</span>
+                        ¡Es el DOBLE de ${otherNum}! (${otherNum} + ${otherNum})
+                    </div>
+                `;
+                return;
+            }
+
+            // 3. Si no hay anclaje, dibujar la Matriz Visual (Arreglo Rectangular)
+            // Limitamos a máximo 50 iconos para que no colapse la pantalla si elige tablas altas después
+            if ((a * b) <= 60) {
+                let matrixHTML = '<div class="visual-aid-matrix">';
+                const emoji = (currentMode === 'story') ? "🚀" : "⭐";
+                for (let i = 0; i < a; i++) {
+                    for (let j = 0; j < b; j++) {
+                        matrixHTML += emoji;
+                    }
+                    matrixHTML += "<br>";
+                }
+                matrixHTML += '</div>';
+                visualBox.innerHTML = matrixHTML;
+                return;
+            }
+
+            // Si es un número muy grande, no mostrar nada para no ensuciar la pantalla
+            visualBox.innerHTML = "";
+        }
+
+        // DATOS MISIONES
+        const missionLevels = [
+            { levelName: "Nivel 1: El Cinturón", templates: ["Para reparar la nave, necesitamos {A} filas de {B} bloques.", "Plantamos Palmas en {A} macetas. Cada maceta tiene {B} semillas.", "Llegaron {A} naves, cada una trae {B} alienígenas.", "Hay {A} cajas cuadradas con {B} frailejones mágicos cada una.", "Tu mascota dio {A} saltos largos de {B} metros."] },
+            { levelName: "Nivel 2: La Nebulosa", templates: ["El panel tiene {A} botones. Cada botón usa {B} cristales.", "Recogimos {A} rocas lunares de {B} kilos cada una.", "A los {A} trajes espaciales les pusimos {B} parches.", "Conectamos {A} torres de energía con {B} cables gruesos.", "La nave activó {A} propulsores, lanzando {B} ráfagas de fuego."] },
+            { levelName: "Nivel 3: La Galaxia", templates: ["El capitán dibujó {A} mapas con {B} rutas secretas.", "Encontramos {A} anillos flotantes con {B} diamantes cada uno.", "Orbitamos {A} planetas gigantes. Cada uno tiene {B} lunas.", "Hay {A} escudos de fuerza. Cada escudo resiste {B} impactos.", "Tu mascota necesita {A} vitaminas al día por {B} días."] }
         ];
         
         const neuroTips = [
-            "¡Equivocarse es genial! Tu cerebro acaba de crear una conexión neuronal nueva para aprender.",
-            "Truco de Espejo: 4x3 es lo mismo que 3x4. ¡Acabas de ahorrarle trabajo a tu memoria!",
-            "Si olvidas una, usa la suma: Si no recuerdas 5x4, piensa en 5+5+5+5.",
-            "Usa tus dedos como supercomputadoras. ¡Cierra los ojos e imagina los números saltando!",
-            "A tu edad, el cerebro es como una esponja mágica. ¡Cada número que intentas te hace más inteligente!"
+            "¡Equivocarse es genial! Tu cerebro acaba de crear una nueva conexión.",
+            "Truco de Espejo: 4x3 es igual a 3x4. ¡Ahorra memoria!",
+            "Si olvidas una, suma: 5x4 es 5+5+5+5.",
+            "Usa tus dedos e imagina los números saltando."
         ];
 
-        // ==========================================
-        // ESTADO DEL JUEGO
-        // ==========================================
+        // ESTADO JUEGO
         let currentMode = 'flash'; 
         let currentAnswer = 0;
         let stars = 0;
         let isWaiting = false; 
-
-        // Snack Rápido
         let energy = 30; 
-
-        // Viaje Espacial
         let currentLevelIndex = 0; 
         let currentQuestionIndex = 0; 
         let lives = 3;
         let activeLevelTemplates = []; 
 
-        // ==========================================
-        // ELEMENTOS DOM
-        // ==========================================
         const mascotEl = document.getElementById('mascot');
         const optionsEl = document.getElementById('options');
         const questionEl = document.getElementById('question');
         const storyContainerEl = document.getElementById('story-container');
         const neuroTipBoxEl = document.getElementById('neuro-tip-box');
         const neuroTipTextEl = document.getElementById('neuro-tip-text');
-        
         const gameScreen = document.getElementById('game-screen');
         const levelPassedScreen = document.getElementById('level-passed-screen');
         const gameOverScreen = document.getElementById('game-over-screen');
@@ -395,9 +406,6 @@
             return arr;
         }
 
-        // ==========================================
-        // LÓGICA DE MODOS
-        // ==========================================
         function switchModeInGame(mode) {
             currentMode = mode;
             hideAllGameScreens();
@@ -417,25 +425,22 @@
                 uiFlash.style.display = 'none';
                 uiStory.style.display = 'block';
                 storyContainerEl.style.display = 'block';
-                
                 currentLevelIndex = 0;
                 initStoryLevel();
             }
         }
 
-        // --- SNACK RÁPIDO ---
         function generateFlashQuestion() {
             isWaiting = false;
             resetMascotFace();
             
-            // Elegir una tabla al azar de las SELECCIONADAS
             const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
             const multiplier = Math.floor(Math.random() * 10) + 1;
             
             currentAnswer = table * multiplier;
             questionEl.innerText = `${table} x ${multiplier} = ?`;
-            questionEl.style.fontSize = "2.5rem";
-
+            
+            renderVisualAid(table, multiplier); // Llamada al Motor Visual
             generateOptionsButtons(currentAnswer);
         }
 
@@ -448,16 +453,12 @@
             else txt.innerText = "Energía: ¡Casi Lleno!";
         }
 
-        // --- MISIONES (DINÁMICO) ---
         function initStoryLevel() {
             lives = 3;
             currentQuestionIndex = 0;
             updateStoryUI();
-            
-            // Tomamos los templates del nivel y los desordenamos
             const pool = missionLevels[currentLevelIndex].templates;
-            activeLevelTemplates = shuffleArray(pool).slice(0, 8); // Tomamos 8 preguntas al azar
-            
+            activeLevelTemplates = shuffleArray(pool).slice(0, 8); 
             generateStoryQuestion();
         }
 
@@ -477,7 +478,6 @@
         function updateStoryUI() {
             document.getElementById('level-name').innerText = missionLevels[currentLevelIndex].levelName;
             document.getElementById('q-current').innerText = currentQuestionIndex + 1;
-            
             let heartString = "";
             for(let i=0; i<3; i++) heartString += (i < lives) ? "❤️" : "🤍";
             document.getElementById('hearts-display').innerText = heartString;
@@ -489,25 +489,21 @@
             updateStoryUI();
 
             const rawTemplate = activeLevelTemplates[currentQuestionIndex];
-            
-            // Inyectar datos dinámicos basados en la selección de tablas de la niña
             const tableA = selectedTables[Math.floor(Math.random() * selectedTables.length)];
             const multiplierB = Math.floor(Math.random() * 10) + 1;
             
             currentAnswer = tableA * multiplierB;
             
-            // Reemplazar {A} y {B} en el texto
             const finalStory = rawTemplate.replace('{A}', `<span style="color:var(--primary); font-weight:bold">${tableA}</span>`)
                                           .replace('{B}', `<span style="color:var(--accent); font-weight:bold">${multiplierB}</span>`);
             
             storyContainerEl.innerHTML = finalStory;
             questionEl.innerText = "¿Cuál es el resultado?";
-            questionEl.style.fontSize = "1.8rem"; 
-
+            
+            renderVisualAid(tableA, multiplierB); // Llamada al Motor Visual
             generateOptionsButtons(currentAnswer);
         }
 
-        // --- LÓGICA COMPARTIDA ---
         function resetMascotFace() {
             mascotEl.innerText = "🥺"; 
             mascotEl.classList.remove('eating', 'sad');
@@ -516,17 +512,13 @@
         function generateOptionsButtons(correctValue) {
             optionsEl.innerHTML = "";
             let optionsSet = new Set([correctValue]);
-            
             while(optionsSet.size < 3) {
                 const offset = Math.floor(Math.random() * 5) + 1; 
                 const isPlus = Math.random() > 0.5;
                 const wrongAnswer = isPlus ? correctValue + offset : correctValue - offset;
-                // Prevenir opciones negativas o ceros confusos
                 if(wrongAnswer > 0 && wrongAnswer !== correctValue) optionsSet.add(wrongAnswer);
             }
-
             const finalOptions = Array.from(optionsSet).sort(() => Math.random() - 0.5);
-
             finalOptions.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
@@ -542,7 +534,6 @@
             neuroTipBoxEl.style.display = "none";
 
             if (selectedValue === currentAnswer) {
-                // CORRECTO
                 btnElement.classList.add('correct');
                 mascotEl.innerText = "😋"; 
                 mascotEl.classList.add('eating');
@@ -555,7 +546,7 @@
                     if (energy >= 100) energy = 100;
                     updateEnergyUI();
                     
-                    if (energy === 100) setTimeout(() => showVictoryScreen("¡Mascota Llenita!", "Has alimentado a tu Astro-Mascota con mucha energía."), 1000);
+                    if (energy === 100) setTimeout(() => showVictoryScreen("¡Mascota Llenita!", "Has alimentado a tu Astro-Mascota."), 1000);
                     else setTimeout(generateFlashQuestion, 1500);
                 } else {
                     currentQuestionIndex++;
@@ -572,9 +563,7 @@
                         setTimeout(generateStoryQuestion, 1500);
                     }
                 }
-
             } else {
-                // INCORRECTO
                 btnElement.classList.add('wrong');
                 mascotEl.innerText = "😖"; 
                 mascotEl.classList.add('sad');
@@ -585,7 +574,6 @@
                 if (currentMode === 'story') {
                     lives--;
                     updateStoryUI();
-                    
                     if (lives <= 0) {
                         setTimeout(() => {
                             hideAllGameScreens();
@@ -615,9 +603,8 @@
             document.getElementById('victory-title').innerText = title;
             document.getElementById('victory-text').innerText = text;
             victoryScreen.style.display = 'block';
-            energy = 30; // Reset por si vuelve a jugar flash
+            energy = 30; 
         }
-
     </script>
 </body>
 </html>
