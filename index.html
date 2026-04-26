@@ -6,7 +6,7 @@
     <title>Astro-Mascota: Misión Multiplicación</title>
     <style>
         /* =========================================
-           DISEÑO INFANTIL - GUARDERÍA ESPACIAL
+           DISEÑO INFANTIL - GUARDERÍA ESPACIAL (VERSIÓN COMPLETA)
            ========================================= */
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;800&display=swap');
 
@@ -18,6 +18,7 @@
             --correct: #00ff88;
             --wrong: #ff6b6b;
             --text-main: #ffffff;
+            --tip-bg: rgba(156, 39, 176, 0.3); /* Color para los Neuro-Tips */
         }
 
         body {
@@ -32,10 +33,10 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* Estrellas de fondo */
+        /* Estrellas de fondo animadas */
         .stars-bg {
             position: absolute;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -50,7 +51,7 @@
             100% { opacity: 0.5; }
         }
 
-        /* Contenedor Principal */
+        /* Contenedor Principal con Glassmorphism */
         .game-container {
             background: var(--panel-bg);
             backdrop-filter: blur(10px);
@@ -58,9 +59,10 @@
             border-radius: 30px;
             padding: 2rem;
             width: 90%;
-            max-width: 500px;
+            max-width: 600px; /* Un poco más ancho para los textos de las misiones */
             text-align: center;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            margin: 2rem 0;
         }
 
         /* Cabecera y Contador de Estrellas */
@@ -90,9 +92,40 @@
             box-shadow: 0 0 10px rgba(255, 184, 0, 0.3);
         }
 
-        /* El Astro-Mascota */
+        /* Navegación de Modos de Juego */
+        .mode-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            background: rgba(0,0,0,0.4);
+            border: 2px solid var(--primary);
+            color: white;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .mode-btn.active {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        /* Área de la Mascota */
         .mascot-area {
-            margin: 20px 0;
+            margin: 10px 0;
         }
 
         .mascot-emoji {
@@ -131,6 +164,7 @@
             border: 2px solid rgba(255,255,255,0.2);
             overflow: hidden;
             position: relative;
+            margin-bottom: 20px;
         }
 
         .energy-fill {
@@ -142,12 +176,19 @@
             box-shadow: 0 0 15px var(--primary);
         }
 
-        /* Área de Preguntas */
+        /* Área de Preguntas y Misiones */
         .question-box {
             background: rgba(0,0,0,0.3);
-            padding: 15px;
+            padding: 20px;
             border-radius: 20px;
-            margin-top: 20px;
+        }
+
+        .story-text {
+            font-size: 1.3rem;
+            color: #e0e0e0;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            display: none; /* Se oculta por defecto, se muestra en Misiones */
         }
 
         .question-text {
@@ -157,12 +198,35 @@
             color: #fff;
         }
 
+        /* Cajón de Neuro-Tips (Astro-Secretos) */
+        .neuro-tip {
+            background: var(--tip-bg);
+            border: 2px dashed #d500f9;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            display: none; /* Oculto hasta que se equivoque */
+            animation: fadeIn 0.5s;
+        }
+
+        .neuro-tip span.title {
+            font-weight: bold;
+            color: #e040fb;
+            font-size: 1.2rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Botones de Opciones */
         .options-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 15px;
+            gap: 15px;
+            margin-top: 20px;
         }
 
         .option-btn {
@@ -191,14 +255,6 @@
         .option-btn.correct { background: var(--correct); border-color: #fff; color: #000; }
         .option-btn.wrong { background: var(--wrong); border-color: #fff; color: #000; opacity: 0.8; }
 
-        /* Mensaje de Feedback */
-        .feedback-msg {
-            height: 30px;
-            margin-top: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
         /* Pantalla de Nivel Completado */
         #level-up-screen {
             display: none;
@@ -216,8 +272,12 @@
             margin-top: 20px;
             cursor: pointer;
             box-shadow: 0 5px 0 #009955;
+            transition: transform 0.2s ease;
         }
-        .restart-btn:hover { transform: scale(1.05); }
+        
+        .restart-btn:hover { 
+            transform: scale(1.05); 
+        }
 
     </style>
 </head>
@@ -231,6 +291,11 @@
             <div class="stars-counter">⭐ <span id="stars-score">0</span></div>
         </div>
 
+        <div class="mode-nav">
+            <button class="mode-btn active" id="btn-flash" onclick="setMode('flash')">⚡ Snack Rápido</button>
+            <button class="mode-btn" id="btn-story" onclick="setMode('story')">🌍 Misiones</button>
+        </div>
+
         <div id="game-screen">
             <div class="mascot-area">
                 <div class="mascot-emoji" id="mascot">🥺</div>
@@ -242,79 +307,163 @@
             </div>
 
             <div class="question-box">
-                <p style="margin:0; color:#b0c4de;">¿Qué bocadillo necesita comer?</p>
+                <div id="story-container" class="story-text"></div>
+                
                 <div class="question-text" id="question">2 x 3 = ?</div>
                 
                 <div class="options-grid" id="options">
                     </div>
             </div>
             
-            <div class="feedback-msg" id="feedback"></div>
+            <div class="neuro-tip" id="neuro-tip-box">
+                <span class="title">🧠 Astro-Secreto:</span> 
+                <span id="neuro-tip-text" style="color:white; font-weight:normal; display:block; margin-top:5px;"></span>
+            </div>
         </div>
 
         <div id="level-up-screen">
             <div class="mascot-emoji" style="font-size: 8rem;">🥳🚀</div>
-            <h2 style="font-family: 'Fredoka One'; color: var(--correct); font-size: 2rem;">¡Mascota Feliz!</h2>
-            <p style="font-size: 1.2rem;">Has alimentado a tu Astro-Mascota con mucha energía matemática. ¡Buen trabajo espacial!</p>
+            <h2 style="font-family: 'Fredoka One'; color: var(--correct); font-size: 2.2rem;">¡Energía al Máximo!</h2>
+            <p style="font-size: 1.2rem;">¡El cerebro de tu mascota y el tuyo han crecido muchísimo hoy! Las neuronas están felices.</p>
             <button class="restart-btn" onclick="resetGame()">Jugar de Nuevo</button>
         </div>
     </div>
 
     <script>
-        // ESTADO DEL JUEGO
+        // ==========================================
+        // BASE DE DATOS EDUCATIVA
+        // ==========================================
         const tables = [2, 3, 4, 5, 6];
+
+        // Misiones de Pensamiento Matemático (Adaptado a su edad y contexto colombiano)
+        const missions = [
+            { tipo: "Espacial", texto: "Para construir una reserva espacial para el Cóndor Andino, necesitamos 3 filas con 4 bloques de energía cada una. ¿Cuántos bloques usamos en total?", ans: 12 },
+            { tipo: "Numérico", texto: "El robot plantó Palmas de Cera estelares. Tiene 5 macetas y en cada una puso 5 semillas. ¿Cuántas semillas plantó en total?", ans: 25 },
+            { tipo: "Métrico", texto: "Cada salto que da la mascota espacial avanza 4 metros. Si da 6 saltos para atrapar una estrella, ¿cuántos metros avanzó?", ans: 24 },
+            { tipo: "Espacial", texto: "En la nave hay 4 cajas cuadradas. Cada caja tiene 6 frailejones mágicos guardados. ¿Cuántos frailejones hay listos para plantar?", ans: 24 },
+            { tipo: "Numérico", texto: "La mascota necesita tomar 2 biberones de polvo estelar cada día. ¿Cuántos biberones tomará en 5 días?", ans: 10 },
+            { tipo: "Variacional", texto: "Por cada planeta nuevo que visitamos, ganamos 3 medallas. Si hoy visitamos 6 planetas, ¿cuántas medallas tenemos?", ans: 18 }
+        ];
+        
+        // Tips de Neurociencia (Mindset de Crecimiento)
+        const neuroTips = [
+            "¡Equivocarse es genial! Tu cerebro acaba de crear una conexión neuronal nueva para aprender.",
+            "Truco de Espejo: 4x3 es lo mismo que 3x4. ¡Acabas de ahorrarle trabajo a tu memoria!",
+            "Si olvidas una, usa la suma: Si no recuerdas 5x4, piensa en 5+5+5+5.",
+            "Usa tus dedos como supercomputadoras. ¡Cierra los ojos e imagina los números saltando!",
+            "El cerebro ama el ritmo. Trata de cantar la tabla como si fuera tu canción favorita.",
+            "A tu edad, el cerebro es como una esponja brillante. ¡Cada número que intentas te hace más inteligente!"
+        ];
+
+        // ==========================================
+        // VARIABLES DE ESTADO DEL JUEGO
+        // ==========================================
+        let currentMode = 'flash'; // 'flash' (Snack) o 'story' (Misiones)
         let currentAnswer = 0;
         let energy = 30; // Inicia con 30% de energía
         let stars = 0;
-        let isWaiting = false; // Previene múltiples clics
+        let isWaiting = false; // Bloqueo temporal para evitar múltiples clics rápidos
 
+        // ==========================================
         // ELEMENTOS DEL DOM
+        // ==========================================
         const mascotEl = document.getElementById('mascot');
         const energyBarEl = document.getElementById('energy-bar');
         const energyTextEl = document.getElementById('energy-text');
         const questionEl = document.getElementById('question');
         const optionsEl = document.getElementById('options');
-        const feedbackEl = document.getElementById('feedback');
         const starsScoreEl = document.getElementById('stars-score');
+        const storyContainerEl = document.getElementById('story-container');
+        const neuroTipBoxEl = document.getElementById('neuro-tip-box');
+        const neuroTipTextEl = document.getElementById('neuro-tip-text');
         const gameScreen = document.getElementById('game-screen');
         const levelUpScreen = document.getElementById('level-up-screen');
+        const btnFlash = document.getElementById('btn-flash');
+        const btnStory = document.getElementById('btn-story');
 
-        // INICIALIZACIÓN
+        // ==========================================
+        // LÓGICA PRINCIPAL
+        // ==========================================
+
+        // Iniciar el juego por primera vez
         function initGame() {
             updateEnergyUI();
             generateQuestion();
         }
 
-        // GENERAR PREGUNTA
+        // Cambiar entre modo rápido y modo misiones
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Actualizar botones visualmente
+            if(mode === 'flash') {
+                btnFlash.classList.add('active');
+                btnStory.classList.remove('active');
+            } else {
+                btnFlash.classList.remove('active');
+                btnStory.classList.add('active');
+            }
+            
+            // Generar una nueva pregunta adaptada al modo
+            generateQuestion();
+        }
+
+        // Crear la pregunta y las opciones
         function generateQuestion() {
             isWaiting = false;
-            mascotEl.innerText = "🥺"; // Cara de hambre/espera
+            
+            // Reiniciar visuales
+            mascotEl.innerText = "🥺"; // Cara de espera
             mascotEl.classList.remove('eating');
-            feedbackEl.innerText = "";
-            optionsEl.innerHTML = "";
+            neuroTipBoxEl.style.display = "none"; // Ocultar el tip
+            optionsEl.innerHTML = ""; // Limpiar botones anteriores
 
-            // Elegir tabla y número al azar
-            const table = tables[Math.floor(Math.random() * tables.length)];
-            const multiplier = Math.floor(Math.random() * 10) + 1;
-            currentAnswer = table * multiplier;
-
-            // Mostrar pregunta
-            questionEl.innerText = `${table} x ${multiplier} = ?`;
-
-            // Generar opciones
-            let optionsSet = new Set([currentAnswer]);
-            while(optionsSet.size < 3) {
-                // Generar respuestas cercanas para que piense (sumando o restando un poco)
-                const offset = (Math.floor(Math.random() * 3) + 1) * table; 
-                const isPlus = Math.random() > 0.5;
-                const wrongAnswer = isPlus ? currentAnswer + offset : currentAnswer - offset;
-                if(wrongAnswer > 0) optionsSet.add(wrongAnswer);
+            if (currentMode === 'flash') {
+                // MODO SNACK RÁPIDO (Cálculo mental directo)
+                storyContainerEl.style.display = "none";
+                
+                const table = tables[Math.floor(Math.random() * tables.length)];
+                const multiplier = Math.floor(Math.random() * 10) + 1;
+                
+                currentAnswer = table * multiplier;
+                questionEl.innerText = `${table} x ${multiplier} = ?`;
+                questionEl.style.fontSize = "2.5rem";
+                
+            } else {
+                // MODO MISIONES (Problemas narrativos)
+                const mission = missions[Math.floor(Math.random() * missions.length)];
+                
+                storyContainerEl.style.display = "block";
+                storyContainerEl.innerHTML = `<strong>Misión (${mission.tipo}):</strong> ${mission.texto}`;
+                
+                currentAnswer = mission.ans;
+                questionEl.innerText = "¿Cuál es la respuesta?";
+                questionEl.style.fontSize = "1.8rem"; // Letra un poco más pequeña para dar espacio
             }
 
-            // Desordenar opciones
+            generateOptionsButtons(currentAnswer);
+        }
+
+        // Generar los 3 botones (1 correcto, 2 distractores lógicos)
+        function generateOptionsButtons(correctValue) {
+            let optionsSet = new Set([correctValue]);
+            
+            while(optionsSet.size < 3) {
+                // Generar respuestas cercanas para que la niña tenga que pensar
+                const offset = Math.floor(Math.random() * 5) + 1; 
+                const isPlus = Math.random() > 0.5;
+                const wrongAnswer = isPlus ? correctValue + offset : correctValue - offset;
+                
+                // Evitar números negativos o ceros
+                if(wrongAnswer > 0 && wrongAnswer !== correctValue) {
+                    optionsSet.add(wrongAnswer);
+                }
+            }
+
+            // Desordenar las opciones para que la correcta no esté siempre en el mismo lugar
             const finalOptions = Array.from(optionsSet).sort(() => Math.random() - 0.5);
 
-            // Crear botones
+            // Insertar botones en el HTML
             finalOptions.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
@@ -324,50 +473,59 @@
             });
         }
 
-        // COMPROBAR RESPUESTA
-        function checkAnswer(selected, btnElement) {
-            if (isWaiting) return;
+        // Validar la respuesta al hacer clic
+        function checkAnswer(selectedValue, btnElement) {
+            if (isWaiting) return; // Evita que haga múltiples clics por error
             isWaiting = true;
 
-            if (selected === currentAnswer) {
+            if (selectedValue === currentAnswer) {
+                // =================================
                 // RESPUESTA CORRECTA
+                // =================================
                 btnElement.classList.add('correct');
-                mascotEl.innerText = "😋"; // Cara comiendo rico
+                mascotEl.innerText = "😋"; // Cara comiendo
                 mascotEl.classList.add('eating');
-                feedbackEl.innerHTML = '<span style="color: var(--correct)">¡Qué rico! +Energía</span>';
+                neuroTipBoxEl.style.display = "none";
                 
-                // Aumentar energía y estrellas
-                energy += 15; // Sube 15% por acierto
-                stars += 1;
+                // Sistema de recompensas: Misiones dan más energía por ser más difíciles
+                const energyGain = (currentMode === 'story') ? 25 : 15;
+                const starsGain = (currentMode === 'story') ? 2 : 1;
+                
+                energy += energyGain; 
+                stars += starsGain;
                 starsScoreEl.innerText = stars;
                 
                 if (energy >= 100) energy = 100;
                 updateEnergyUI();
 
-                // Revisar si ganó
+                // Verificar si llenó la barra
                 if (energy === 100) {
                     setTimeout(showLevelUp, 1000);
                 } else {
-                    setTimeout(generateQuestion, 1500); // Siguiente pregunta en 1.5s
+                    setTimeout(generateQuestion, 1500); // Avanzar a la siguiente
                 }
 
             } else {
+                // =================================
                 // RESPUESTA INCORRECTA
+                // =================================
                 btnElement.classList.add('wrong');
-                mascotEl.innerText = "🤔"; // Cara pensativa, no triste
-                feedbackEl.innerHTML = '<span style="color: var(--wrong)">Ese bocadillo no era. ¡Intenta de nuevo!</span>';
+                mascotEl.innerText = "🤔"; // Cara pensativa, no regañona
                 
-                // Dejar que intente de nuevo rápido sin cambiar la pregunta
+                // Seleccionar un Neuro-Tip al azar y mostrarlo
+                const randomTip = neuroTips[Math.floor(Math.random() * neuroTips.length)];
+                neuroTipTextEl.innerText = randomTip;
+                neuroTipBoxEl.style.display = "block";
+                
+                // Quitar el color rojo después de unos segundos para que vuelva a intentar
                 setTimeout(() => {
                     btnElement.classList.remove('wrong');
-                    mascotEl.innerText = "🥺";
-                    feedbackEl.innerText = "";
-                    isWaiting = false;
-                }, 1500);
+                    isWaiting = false; // Desbloquear para que intente de nuevo
+                }, 2000);
             }
         }
 
-        // ACTUALIZAR BARRA DE ENERGÍA
+        // Actualizar visualmente la barra y el texto de energía
         function updateEnergyUI() {
             energyBarEl.style.width = `${energy}%`;
             
@@ -380,13 +538,13 @@
             }
         }
 
-        // PANTALLA DE VICTORIA
+        // Mostrar la pantalla final
         function showLevelUp() {
             gameScreen.style.display = 'none';
             levelUpScreen.style.display = 'block';
         }
 
-        // REINICIAR JUEGO (Mantiene las estrellas acumuladas)
+        // Reiniciar el juego (Mantiene las estrellas acumuladas como trofeo)
         function resetGame() {
             energy = 30;
             gameScreen.style.display = 'block';
@@ -394,7 +552,7 @@
             initGame();
         }
 
-        // Arrancar el juego al cargar
+        // Arrancar el juego automáticamente al cargar la página
         initGame();
     </script>
 </body>
