@@ -3,415 +3,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AstroMath: Misión Multiplicación</title>
+    <title>Astro-Mascota: Misión Multiplicación</title>
     <style>
         /* =========================================
-           DISEÑO GLASSMORPHISM & NEÓN 2030
+           DISEÑO INFANTIL - GUARDERÍA ESPACIAL
            ========================================= */
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;800&display=swap');
 
         :root {
+            --bg-color: #1a0b2e;
+            --panel-bg: rgba(255, 255, 255, 0.1);
             --primary: #00f0ff;
-            --secondary: #ff007f;
-            --success: #00ff88;
-            --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #ffb800; /* Color estrella/comida */
+            --correct: #00ff88;
+            --wrong: #ff6b6b;
+            --text-main: #ffffff;
         }
 
         body {
             margin: 0;
             padding: 0;
             font-family: 'Nunito', sans-serif;
-            background: var(--bg-gradient);
-            color: #ffffff;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 50%, #2a114f 0%, #1a0b2e 100%);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow-x: hidden;
-        }
-
-        /* Efectos de fondo cósmico */
-        .background-orbs {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1;
+            justify-content: center;
             overflow: hidden;
         }
-        .orb {
+
+        /* Estrellas de fondo */
+        .stars-bg {
             position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.5;
-            animation: float 10s infinite alternate;
-        }
-        .orb-1 { width: 300px; height: 300px; background: var(--primary); top: -100px; left: -100px; }
-        .orb-2 { width: 400px; height: 400px; background: var(--secondary); bottom: -150px; right: -100px; animation-delay: -5s; }
-
-        @keyframes float {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+            opacity: 0.3;
+            z-index: -1;
+            animation: twinkle 10s infinite alternate;
         }
 
-        /* Contenedor Principal (Glassmorphism) */
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            100% { opacity: 0.5; }
+        }
+
+        /* Contenedor Principal */
+        .game-container {
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
             padding: 2rem;
             width: 90%;
-            max-width: 800px;
-            margin: 2rem auto;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            max-width: 500px;
             text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Cabecera y Contador de Estrellas */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-size: 2.5rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--primary);
-            margin-bottom: 0.5rem;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.8rem;
+            margin: 0;
+            color: var(--primary);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        p.subtitle {
-            font-size: 1.2rem;
-            color: #b0c4de;
-            margin-bottom: 2rem;
-        }
-
-        /* Navegación Pedagógica */
-        .nav-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        button {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--primary);
-            color: white;
+        .stars-counter {
+            background: rgba(0,0,0,0.3);
             padding: 10px 20px;
-            font-size: 1.1rem;
-            font-family: 'Nunito', sans-serif;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            font-family: 'Fredoka One', cursive;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 10px rgba(255, 184, 0, 0.3);
+        }
+
+        /* El Astro-Mascota */
+        .mascot-area {
+            margin: 20px 0;
+        }
+
+        .mascot-emoji {
+            font-size: 6rem;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .mascot-emoji.eating {
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Barra de Energía */
+        .energy-label {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
             font-weight: bold;
         }
 
-        button:hover, button.active {
-            background: var(--primary);
-            color: #000;
+        .energy-bar-container {
+            width: 100%;
+            height: 25px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 15px;
+            border: 2px solid rgba(255,255,255,0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .energy-fill {
+            height: 100%;
+            width: 30%; /* Estado inicial */
+            background: linear-gradient(90deg, #ff007f, var(--primary));
+            border-radius: 15px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 0 15px var(--primary);
         }
 
-        button.btn-secondary { border-color: var(--secondary); }
-        button.btn-secondary:hover { background: var(--secondary); box-shadow: 0 0 15px var(--secondary); }
-        
-        button.btn-success { border-color: var(--success); }
-        button.btn-success:hover { background: var(--success); box-shadow: 0 0 15px var(--success); }
-
-        /* Secciones */
-        .section { display: none; animation: fadeIn 0.5s ease; }
-        .section.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Área de Preguntas */
+        .question-box {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 20px;
+            margin-top: 20px;
         }
 
-        /* FASE 1: Estudio */
-        .tables-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            margin-top: 1rem;
-        }
-        .table-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            padding: 10px;
-            font-size: 1.2rem;
-            border: 1px solid rgba(255,255,255,0.05);
+        .question-text {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5rem;
+            margin: 10px 0;
+            color: #fff;
         }
 
-        /* FASE 2 & 3: Práctica y Evaluación */
-        .game-screen {
-            font-size: 2rem;
-            margin: 2rem 0;
-            font-weight: 900;
-        }
+        /* Botones de Opciones */
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        .option-btn {
-            font-size: 1.5rem;
-            padding: 15px;
-            border-radius: 16px;
-            border: 2px solid rgba(255,255,255,0.2);
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
         }
 
-        /* Progreso y Evidencia */
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 5px;
-            margin-top: 2rem;
-            overflow: hidden;
+        .option-btn {
+            background: linear-gradient(145deg, #2a114f, #3b1b6e);
+            border: 2px solid var(--primary);
+            color: white;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.8rem;
+            padding: 15px 5px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 5px 0 #1a0b2e;
         }
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--success);
-            transition: width 0.3s ease;
+
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0 #1a0b2e, 0 0 15px var(--primary);
         }
-        .evidence-card {
-            border: 2px dashed var(--success);
-            background: rgba(0, 255, 136, 0.1);
-            padding: 2rem;
-            border-radius: 16px;
-            margin-top: 1rem;
+
+        .option-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #1a0b2e;
         }
+
+        .option-btn.correct { background: var(--correct); border-color: #fff; color: #000; }
+        .option-btn.wrong { background: var(--wrong); border-color: #fff; color: #000; opacity: 0.8; }
+
+        /* Mensaje de Feedback */
+        .feedback-msg {
+            height: 30px;
+            margin-top: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Pantalla de Nivel Completado */
+        #level-up-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .restart-btn {
+            background: var(--correct);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5rem;
+            border-radius: 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #009955;
+        }
+        .restart-btn:hover { transform: scale(1.05); }
+
     </style>
 </head>
 <body>
 
-    <div class="background-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-    </div>
+    <div class="stars-bg"></div>
 
-    <div class="glass-panel">
-        <h1>AstroMath</h1>
-        <p class="subtitle">Academia Espacial de Multiplicación (Tablas del 2 al 6)</p>
-
-        <div class="nav-buttons">
-            <button id="btn-study" class="active" onclick="showSection('study')">1. Entrenamiento</button>
-            <button id="btn-practice" class="btn-secondary" onclick="showSection('practice')">2. Simulador</button>
-            <button id="btn-eval" class="btn-success" onclick="showSection('evaluation')">3. Misión Final</button>
+    <div class="game-container">
+        <div class="header">
+            <h1>Astro-Mascota</h1>
+            <div class="stars-counter">⭐ <span id="stars-score">0</span></div>
         </div>
 
-        <div id="section-study" class="section active">
-            <h2>Base de Datos Numérica</h2>
-            <p>Selecciona una tabla para analizar sus patrones.</p>
-            <div class="nav-buttons">
-                <button onclick="renderTable(2)">Tabla del 2</button>
-                <button onclick="renderTable(3)">Tabla del 3</button>
-                <button onclick="renderTable(4)">Tabla del 4</button>
-                <button onclick="renderTable(5)">Tabla del 5</button>
-                <button onclick="renderTable(6)">Tabla del 6</button>
+        <div id="game-screen">
+            <div class="mascot-area">
+                <div class="mascot-emoji" id="mascot">🥺</div>
             </div>
-            <div id="table-display" class="tables-grid">
-                </div>
-        </div>
 
-        <div id="section-practice" class="section">
-            <h2>Simulador de Combate de Asteroides</h2>
-            <p>¡Destruye el asteroide con la respuesta correcta! (Sin límite de tiempo)</p>
-            <button onclick="startPractice()">Iniciar Simulador</button>
+            <div class="energy-label" id="energy-text">Nivel de Energía: Hambriento</div>
+            <div class="energy-bar-container">
+                <div class="energy-fill" id="energy-bar"></div>
+            </div>
+
+            <div class="question-box">
+                <p style="margin:0; color:#b0c4de;">¿Qué bocadillo necesita comer?</p>
+                <div class="question-text" id="question">2 x 3 = ?</div>
+                
+                <div class="options-grid" id="options">
+                    </div>
+            </div>
             
-            <div id="practice-game" style="display:none;">
-                <div class="game-screen" id="practice-question">2 x 3 = ?</div>
-                <div class="options-grid" id="practice-options"></div>
-                <p id="practice-feedback" style="height: 20px; margin-top:15px;"></p>
-            </div>
+            <div class="feedback-msg" id="feedback"></div>
         </div>
 
-        <div id="section-evaluation" class="section">
-            <h2>Evidencia de Aprendizaje</h2>
-            <p>Demuestra tu dominio. 10 misiones críticas. ¿Estás listo, cadete?</p>
-            <button class="btn-success" onclick="startEvaluation()">Iniciar Evaluación</button>
-
-            <div id="eval-game" style="display:none;">
-                <p>Misión: <span id="eval-counter">1</span> / 10</p>
-                <div class="game-screen" id="eval-question"></div>
-                <div class="options-grid" id="eval-options"></div>
-                <div class="progress-bar"><div class="progress-fill" id="eval-progress"></div></div>
-            </div>
-
-            <div id="eval-results" style="display:none;" class="evidence-card">
-                <h3>Reporte de Evidencia Generado</h3>
-                <h1 id="eval-score" style="font-size: 4rem; margin: 10px 0; color: var(--success);">100%</h1>
-                <p id="eval-message"></p>
-                <button onclick="startEvaluation()">Reintentar Misión</button>
-            </div>
+        <div id="level-up-screen">
+            <div class="mascot-emoji" style="font-size: 8rem;">🥳🚀</div>
+            <h2 style="font-family: 'Fredoka One'; color: var(--correct); font-size: 2rem;">¡Mascota Feliz!</h2>
+            <p style="font-size: 1.2rem;">Has alimentado a tu Astro-Mascota con mucha energía matemática. ¡Buen trabajo espacial!</p>
+            <button class="restart-btn" onclick="resetGame()">Jugar de Nuevo</button>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // LÓGICA DE PEDAGOGÍA ACTIVA Y GAMIFICACIÓN
-        // ==========================================
-        const validTables = [2, 3, 4, 5, 6];
-        let currentCorrectAnswer = 0;
-        
-        // Variables para Evaluación
-        let evalQuestionCount = 0;
-        let evalScore = 0;
-        const totalEvalQuestions = 10;
+        // ESTADO DEL JUEGO
+        const tables = [2, 3, 4, 5, 6];
+        let currentAnswer = 0;
+        let energy = 30; // Inicia con 30% de energía
+        let stars = 0;
+        let isWaiting = false; // Previene múltiples clics
 
-        // Navegación
-        function showSection(section) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-buttons button').forEach(b => b.classList.remove('active'));
-            
-            document.getElementById(`section-${section}`).classList.add('active');
-            
-            if(section === 'study') document.getElementById('btn-study').classList.add('active');
-            if(section === 'practice') document.getElementById('btn-practice').classList.add('active');
-            if(section === 'evaluation') document.getElementById('btn-eval').classList.add('active');
+        // ELEMENTOS DEL DOM
+        const mascotEl = document.getElementById('mascot');
+        const energyBarEl = document.getElementById('energy-bar');
+        const energyTextEl = document.getElementById('energy-text');
+        const questionEl = document.getElementById('question');
+        const optionsEl = document.getElementById('options');
+        const feedbackEl = document.getElementById('feedback');
+        const starsScoreEl = document.getElementById('stars-score');
+        const gameScreen = document.getElementById('game-screen');
+        const levelUpScreen = document.getElementById('level-up-screen');
+
+        // INICIALIZACIÓN
+        function initGame() {
+            updateEnergyUI();
+            generateQuestion();
         }
 
-        // FASE 1: Entrenamiento
-        function renderTable(num) {
-            const display = document.getElementById('table-display');
-            display.innerHTML = '';
-            for (let i = 1; i <= 10; i++) {
-                const card = document.createElement('div');
-                card.className = 'table-card';
-                card.innerHTML = `<span style="color:var(--primary)">${num}</span> x ${i} = <strong>${num * i}</strong>`;
-                display.appendChild(card);
-            }
-        }
-        // Inicializar con la tabla del 2
-        renderTable(2);
+        // GENERAR PREGUNTA
+        function generateQuestion() {
+            isWaiting = false;
+            mascotEl.innerText = "🥺"; // Cara de hambre/espera
+            mascotEl.classList.remove('eating');
+            feedbackEl.innerText = "";
+            optionsEl.innerHTML = "";
 
-        // Funciones Utilitarias Core
-        function getRandomQuestion() {
-            const table = validTables[Math.floor(Math.random() * validTables.length)];
+            // Elegir tabla y número al azar
+            const table = tables[Math.floor(Math.random() * tables.length)];
             const multiplier = Math.floor(Math.random() * 10) + 1;
-            return { table, multiplier, answer: table * multiplier };
-        }
+            currentAnswer = table * multiplier;
 
-        function generateOptions(correctAnswer) {
-            let options = new Set([correctAnswer]);
-            while(options.size < 4) {
-                // Generar distractores lógicos (errores comunes)
-                const offset = Math.floor(Math.random() * 5) + 1;
-                const dir = Math.random() > 0.5 ? 1 : -1;
-                let wrong = correctAnswer + (offset * dir);
-                if (wrong > 0) options.add(wrong);
+            // Mostrar pregunta
+            questionEl.innerText = `${table} x ${multiplier} = ?`;
+
+            // Generar opciones
+            let optionsSet = new Set([currentAnswer]);
+            while(optionsSet.size < 3) {
+                // Generar respuestas cercanas para que piense (sumando o restando un poco)
+                const offset = (Math.floor(Math.random() * 3) + 1) * table; 
+                const isPlus = Math.random() > 0.5;
+                const wrongAnswer = isPlus ? currentAnswer + offset : currentAnswer - offset;
+                if(wrongAnswer > 0) optionsSet.add(wrongAnswer);
             }
-            return Array.from(options).sort(() => Math.random() - 0.5); // Shuffle
-        }
 
-        // FASE 2: Práctica
-        function startPractice() {
-            document.getElementById('practice-game').style.display = 'block';
-            document.querySelector('#section-practice > button').style.display = 'none';
-            nextPracticeQuestion();
-        }
+            // Desordenar opciones
+            const finalOptions = Array.from(optionsSet).sort(() => Math.random() - 0.5);
 
-        function nextPracticeQuestion() {
-            const q = getRandomQuestion();
-            currentCorrectAnswer = q.answer;
-            document.getElementById('practice-question').innerText = `${q.table} x ${q.multiplier} = ?`;
-            
-            const optionsContainer = document.getElementById('practice-options');
-            optionsContainer.innerHTML = '';
-            const options = generateOptions(q.answer);
-
-            options.forEach(opt => {
+            // Crear botones
+            finalOptions.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = opt;
-                btn.onclick = () => checkPracticeAnswer(opt, btn);
-                optionsContainer.appendChild(btn);
-            });
-            document.getElementById('practice-feedback').innerText = '';
-        }
-
-        function checkPracticeAnswer(selected, btn) {
-            const feedback = document.getElementById('practice-feedback');
-            if (selected === currentCorrectAnswer) {
-                btn.style.background = 'var(--success)';
-                btn.style.color = '#000';
-                feedback.innerHTML = '<span style="color:var(--success)">¡Impacto confirmado! Correcto.</span>';
-                setTimeout(nextPracticeQuestion, 1000);
-            } else {
-                btn.style.background = 'var(--secondary)';
-                feedback.innerHTML = '<span style="color:var(--secondary)">Fallo en los cálculos. Intenta de nuevo.</span>';
-            }
-        }
-
-        // FASE 3: Evaluación (Evidencia de Aprendizaje)
-        function startEvaluation() {
-            evalQuestionCount = 0;
-            evalScore = 0;
-            document.getElementById('eval-results').style.display = 'none';
-            document.getElementById('eval-game').style.display = 'block';
-            document.querySelector('#section-evaluation > button').style.display = 'none';
-            nextEvalQuestion();
-        }
-
-        function nextEvalQuestion() {
-            if (evalQuestionCount >= totalEvalQuestions) {
-                showEvalResults();
-                return;
-            }
-            
-            evalQuestionCount++;
-            document.getElementById('eval-counter').innerText = evalQuestionCount;
-            document.getElementById('eval-progress').style.width = `${(evalQuestionCount / totalEvalQuestions) * 100}%`;
-
-            const q = getRandomQuestion();
-            currentCorrectAnswer = q.answer;
-            document.getElementById('eval-question').innerText = `${q.table} x ${q.multiplier} = ?`;
-            
-            const optionsContainer = document.getElementById('eval-options');
-            optionsContainer.innerHTML = '';
-            const options = generateOptions(q.answer);
-
-            options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt;
-                btn.onclick = () => checkEvalAnswer(opt);
-                optionsContainer.appendChild(btn);
+                btn.onclick = () => checkAnswer(opt, btn);
+                optionsEl.appendChild(btn);
             });
         }
 
-        function checkEvalAnswer(selected) {
-            if (selected === currentCorrectAnswer) {
-                evalScore++;
+        // COMPROBAR RESPUESTA
+        function checkAnswer(selected, btnElement) {
+            if (isWaiting) return;
+            isWaiting = true;
+
+            if (selected === currentAnswer) {
+                // RESPUESTA CORRECTA
+                btnElement.classList.add('correct');
+                mascotEl.innerText = "😋"; // Cara comiendo rico
+                mascotEl.classList.add('eating');
+                feedbackEl.innerHTML = '<span style="color: var(--correct)">¡Qué rico! +Energía</span>';
+                
+                // Aumentar energía y estrellas
+                energy += 15; // Sube 15% por acierto
+                stars += 1;
+                starsScoreEl.innerText = stars;
+                
+                if (energy >= 100) energy = 100;
+                updateEnergyUI();
+
+                // Revisar si ganó
+                if (energy === 100) {
+                    setTimeout(showLevelUp, 1000);
+                } else {
+                    setTimeout(generateQuestion, 1500); // Siguiente pregunta en 1.5s
+                }
+
+            } else {
+                // RESPUESTA INCORRECTA
+                btnElement.classList.add('wrong');
+                mascotEl.innerText = "🤔"; // Cara pensativa, no triste
+                feedbackEl.innerHTML = '<span style="color: var(--wrong)">Ese bocadillo no era. ¡Intenta de nuevo!</span>';
+                
+                // Dejar que intente de nuevo rápido sin cambiar la pregunta
+                setTimeout(() => {
+                    btnElement.classList.remove('wrong');
+                    mascotEl.innerText = "🥺";
+                    feedbackEl.innerText = "";
+                    isWaiting = false;
+                }, 1500);
             }
-            // En evaluación no hay feedback inmediato para medir competencia real
-            nextEvalQuestion();
         }
 
-        function showEvalResults() {
-            document.getElementById('eval-game').style.display = 'none';
-            document.getElementById('eval-results').style.display = 'block';
+        // ACTUALIZAR BARRA DE ENERGÍA
+        function updateEnergyUI() {
+            energyBarEl.style.width = `${energy}%`;
             
-            const percentage = (evalScore / totalEvalQuestions) * 100;
-            const scoreDisplay = document.getElementById('eval-score');
-            const messageDisplay = document.getElementById('eval-message');
-            
-            scoreDisplay.innerText = `${percentage}%`;
-            
-            if (percentage >= 80) {
-                scoreDisplay.style.color = 'var(--success)';
-                messageDisplay.innerText = "¡Misión Cumplida! Evidencia de aprendizaje: Nivel de Maestría Alcanzado. ¡Eres un cadete de élite!";
-            } else if (percentage >= 60) {
-                scoreDisplay.style.color = '#ffd700'; // Gold/Yellow
-                messageDisplay.innerText = "Evidencia de aprendizaje: En progreso. Has superado la barrera, pero el entrenamiento continuo fortalecerá tus conexiones neuronales.";
+            if (energy < 50) {
+                energyTextEl.innerText = "Nivel de Energía: Hambriento";
+            } else if (energy < 80) {
+                energyTextEl.innerText = "Nivel de Energía: Satisfecho";
             } else {
-                scoreDisplay.style.color = 'var(--secondary)';
-                messageDisplay.innerText = "Evidencia de aprendizaje: Requiere refuerzo. ¡No te rindas! Vuelve al simulador para calibrar tus sistemas lógicos.";
+                energyTextEl.innerText = "Nivel de Energía: ¡Casi Lleno!";
             }
         }
+
+        // PANTALLA DE VICTORIA
+        function showLevelUp() {
+            gameScreen.style.display = 'none';
+            levelUpScreen.style.display = 'block';
+        }
+
+        // REINICIAR JUEGO (Mantiene las estrellas acumuladas)
+        function resetGame() {
+            energy = 30;
+            gameScreen.style.display = 'block';
+            levelUpScreen.style.display = 'none';
+            initGame();
+        }
+
+        // Arrancar el juego al cargar
+        initGame();
     </script>
 </body>
 </html>
